@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { tap } from 'rxjs/operators';
-import { AddUsers, DeleteUsers, GetUsers, UpdateUsers } from "../actions/app.action";
+import { AddUsers, DeleteUsers, GetUsers, UpdateUsers } from "../actions/user.action";
 import { MockServerService } from "../services/mock-server.service";
 import { User } from "../types/user";
 
-export interface UserStateModel {
+interface UserStateModel {
     users: User[];
 }
 
@@ -17,7 +17,7 @@ export interface UserStateModel {
 })
 
 @Injectable()
-export class AppState {
+export class UserState {
     constructor(private _mss: MockServerService) { }
 
     @Selector()
@@ -26,18 +26,13 @@ export class AppState {
     }
 
     @Action(GetUsers)
-    getDataFromState(ctx: StateContext<UserStateModel>) {
-        console.log('get user');
-        
-       
+    getDataFromState(ctx: StateContext<UserStateModel>) {      
         return this._mss.fetchUsers().pipe(tap(returnData => {
             const state = ctx.getState();
-            console.log('Current state:', state); // Debugging line
             ctx.setState({
                 ...state,
                 users: returnData
             });
-            console.log('Updated state:', ctx.getState()); // Debugging line
         }));
     }
 

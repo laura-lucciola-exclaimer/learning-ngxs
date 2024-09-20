@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { GetUsers, AddUsers, UpdateUsers, DeleteUsers } from '../../actions/app.action';
-import { AppState } from '../../states/app.state';
+import { GetUsers, AddUsers, UpdateUsers, DeleteUsers } from '../../actions/user.action';
+import { UserState } from '../../states/user.state';
 import { CommonModule } from '@angular/common';
-import { AppStateModule } from '../../states/app.state.module';
+import { UserStateModule } from '../../states/user.state.module';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AppStateModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserStateModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
 export class UserComponent implements OnInit {
   public userForm!: FormGroup;
-  public users$ = this.store.select(AppState.getAllUsers);
+  public users$ = this.store.select(UserState.getAllUsers);
 
   constructor(private store: Store, private fb: FormBuilder) { }
 
