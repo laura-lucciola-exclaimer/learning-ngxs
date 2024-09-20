@@ -27,4 +27,19 @@ describe('UserComponent', () => {
     const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
+
+  it('should return the correct title based on addMode', () => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const component = fixture.componentInstance;
+
+    const testCases = [
+      { addMode: true, expectedTitle: 'Add new user' },
+      { addMode: false, expectedTitle: 'Update user' }
+    ];
+
+    testCases.forEach(testCase => {
+      component.addMode.set(testCase.addMode);
+      expect(component.getTitle()).toBe(testCase.expectedTitle);
+    });
+  });
 });

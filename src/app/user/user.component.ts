@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { GetUsers, AddUser, UpdateUser, DeleteUser } from '../../actions/user.action';
@@ -17,6 +17,8 @@ import { User } from '../../types/user';
 export class UserComponent implements OnInit {
   public userForm!: FormGroup;
   public users$ = this.store.select(UserState.getAllUsers);
+  public addMode = signal(true);
+  public userId = signal(0);
 
   constructor(private store: Store, private fb: FormBuilder) { }
 
@@ -33,27 +35,44 @@ export class UserComponent implements OnInit {
     this.store.dispatch(new GetUsers());
   }
 
-  public addUser() {
-    this.store.dispatch(new AddUser(this.userForm.value));
-    this.userForm.reset();
+  public getTitle(): string{
+    return this.addMode() ? 'Add new user' : 'Update user';
   }
 
-  public updateUser(id: number) {
-
-    const newData : User = {
-      id: id,
-      name: "Hello World",
-      username: "helloWorld2024",
-      email: 'helloWorld2024@gmail.com',
-      phone: '02138-280055',
-      website: 'helloWorld.com'
-    }
-
-    this.store.dispatch(new UpdateUser(newData, id));
+  public setUpdateUserState(id: number) {
+    this.addMode.set(false);
+    
+    this.users$.subscribe(users => {
+      const user =  users.find(x => x.id === id);
+      
+      if (user) {
+        this.userId.set(id);
+        this.userForm.setValue(user);   
+    } else{
+        console.info(`There is no user with id: ${id}`);
+    } 
+  })    
   }
 
   public deleteUser(i: number) {
     this.store.dispatch(new DeleteUser(i));
   }
+
+  public submitForm(){
+    this.addMode() ? this.addUser() : this.updateUser();
+ }
+
+ private addUser() {
+   this.store.dispatch(new AddUser(this.userForm.value));
+   this.userForm.reset();
+ }
+ private updateUser() {
+   this.store.dispatch(new UpdateUser(this.userForm.value, this.userId()))
+   .subscribe( _ => {
+     this.addMode.set(true);
+     this.userForm.reset();    
+   });
+ }
+
 }
 
