@@ -5,6 +5,7 @@ import { GetUsers, AddUsers, UpdateUsers, DeleteUsers } from '../../actions/user
 import { UserState } from '../../states/user.state';
 import { CommonModule } from '@angular/common';
 import { UserStateModule } from '../../states/user.state.module';
+import { User } from '../../types/user';
 
 @Component({
   selector: 'app-user',
@@ -30,21 +31,16 @@ export class UserComponent implements OnInit {
     });
 
     this.store.dispatch(new GetUsers());
-
-    this.users$.subscribe(users => {
-      console.log('Users:', users); // Debugging line
-    });
   }
 
-
-  addUser() {
+  public addUser() {
     this.store.dispatch(new AddUsers(this.userForm.value));
     this.userForm.reset();
   }
 
-  updateUser(id: number, i: number) {
+  public updateUser(id: number, i: number) {
 
-    const newData = {
+    const newData : User = {
       id: id,
       name: "Hello World",
       username: "helloWorld2024",
@@ -56,7 +52,7 @@ export class UserComponent implements OnInit {
     this.store.dispatch(new UpdateUsers(newData, id, i));
   }
 
-  deleteUser(i: number) {
+  public deleteUser(i: number) {
     this.store.dispatch(new DeleteUsers(i));
   }
 }
