@@ -1,56 +1,56 @@
-<div class="container-fluid">
-    <h2 style="text-decoration: underline;">Getting started with NGXS</h2>
-    <div class="row my-4">
-      <div class="col-md-3">
-        <h5 style="color: grey;">Add new user to State</h5>
-        <form [formGroup]="userForm" (ngSubmit)="addUser()">
-          <label class="form-label">ID</label>
-          <input type="text" class="form-control mb-2" placeholder="User ID" formControlName="id">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-control mb-2" placeholder="Enter Name" formControlName="name">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-control mb-2" placeholder="Enter a unique username" formControlName="username">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control mb-2" placeholder="example@abcd.com" formControlName="email">
-          <label class="form-label">Phone</label>
-          <input type="number" class="form-control mb-2" placeholder="Enter Contact No." formControlName="phone">
-          <label class="form-label">Website</label>
-          <input type="email" class="form-control mb-2" placeholder="Enter website name" formControlName="website">
-          <button type="submit" class="btn btn-primary btn-sm mt-2">Add User</button>
+<div class="user-component-container">
+    <h2 class="user-component-title">User List via NGXS</h2>
+      <div class="user-component-body">
+        <h4 class="user-component-subtitle">Add new user:</h4>
+        <form [formGroup]="userForm" (ngSubmit)="addUser()" class="user-component-form">
+          <div class="user-component-form-column">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control" placeholder="User ID" formControlName="id">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" placeholder="Enter Name" formControlName="name">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" placeholder="Enter a unique username" formControlName="username">
+          </div>
+          <div class="user-component-form-column">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="example@abcd.com" formControlName="email">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-control" placeholder="Enter Contact No." formControlName="phone">
+            <label class="form-label">Website</label>
+            <input type="url" class="form-control" placeholder="Enter website name" formControlName="website">
+          </div>
+          <button type="submit" class="form-submit-button">Add User</button>
         </form>
       </div>
-      <div class="col-md-9">
-        <h5 style="color: grey;">User Information</h5>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Username</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Website</th>
-              <th scope="col">Update</th>
-              <th scope="col">Delete</th>
+      <div class="user-component-body">
+        <h4 class="user-component-subtitle">User List:</h4>
+        <table class="user-component-table">
+          <thead class="table-header-row">
+            <tr class="table-row">
+              <th class="table-cell">ID</th>
+              <th class="table-cell">Name</th>
+              <th class="table-cell">Username</th>
+              <th class="table-cell">Email</th>
+              <th class="table-cell">Phone</th>
+              <th class="table-cell">Website</th>
+              <th class="table-cell">Update</th>
+              <th class="table-cell">Delete</th>
             </tr>
           </thead>
           <tbody>
             @for (user of users$ | async; track user.id) {
-                <tr >
-                  <th scope="row">{{user.id}}</th>
-                  <td>{{user.name}}</td>
-                  <td>{{user.username}}</td>
-                  <td>{{user.email}}</td>
-                  <td>{{user.phone}}</td>
-                  <td>{{user.website}}</td>
-                  <td><button class="btn btn-outline-warning btn-sm" (click)="updateUser(user.id)"><i
-                        class="bi bi-pencil-fill"></i></button></td>
-                  <td><button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)"><i
-                        class="bi bi-trash-fill"></i></button></td>
+                <tr class="table-row">
+                  <th scope="table-cell">{{user.id}}</th>
+                  <td class="table-cell" >{{user.name}}</td>
+                  <td class="table-cell" >{{user.username}}</td>
+                  <td class="table-cell" >{{user.email}}</td>
+                  <td class="table-cell" >{{user.phone}}</td>
+                  <td class="table-cell" >{{user.website}}</td>
+                  <td class="table-cell" ><button class="update-user-button" (click)="updateUser(user.id)">Update</button></td>
+                  <td class="table-cell" ><button class="delete-user-button" (click)="deleteUser(user.id)">Delete</button></td>
                 </tr>
             }            
           </tbody>
         </table>
       </div>
-    </div>
   </div>
