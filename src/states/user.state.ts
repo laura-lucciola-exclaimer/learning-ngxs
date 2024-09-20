@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { tap } from 'rxjs/operators';
-import { AddUsers, DeleteUsers, GetUsers, UpdateUsers } from "../actions/user.action";
+import { AddUser, DeleteUser, GetUsers, UpdateUser } from "../actions/user.action";
 import { UserService } from "../services/user.service";
 import { User } from "../types/user";
 
@@ -27,7 +27,7 @@ export class UserState {
 
     @Action(GetUsers)
     getDataFromState(ctx: StateContext<UserStateModel>) {      
-        return this._us.fetchUsers().pipe(tap(returnData => {
+        return this._us.fetchUsers().pipe(tap((returnData: User[]) => {
             const state = ctx.getState();
             ctx.setState({
                 ...state,
@@ -37,9 +37,9 @@ export class UserState {
     }
 
 
-    @Action(AddUsers)
-    addDataToState(ctx: StateContext<UserStateModel>, { payload }: AddUsers) {
-        return this._us.addUsers(payload).pipe(tap((returnData:any) => {
+    @Action(AddUser)
+    addDataToState(ctx: StateContext<UserStateModel>, { payload }: AddUser) {
+        return this._us.addUsers(payload).pipe(tap((returnData:User) => {
             const state=ctx.getState();
             ctx.patchState({
                 users:[...state.users, returnData]
@@ -47,25 +47,31 @@ export class UserState {
         }))
     }
 
-    @Action(UpdateUsers)
-    updateDataOfState(ctx: StateContext<UserStateModel>, { payload, id, i }: UpdateUsers) {
-        return this._us.updateUser(payload, i).pipe(tap((returnData:any) => {
+    @Action(UpdateUser)
+    updateDataOfState(ctx: StateContext<UserStateModel>, { payload, id }: UpdateUser) {
+        return this._us.updateUser(payload, id).pipe(tap((returnData:User) => {
             const state=ctx.getState();
+            const index = state.users.findIndex(x => x.id === id);
+            if (index >= 0) {
+                
+                const userList = [...state.users];
+                userList[index]=payload;
+    
+                ctx.setState({
+                    ...state,
+                    users: userList,
+                });
+            } else{
+                console.info(`There is no user with id: ${id}`);
+            }          
 
-            const userList = [...state.users];
-            userList[i]=payload;
-
-            ctx.setState({
-                ...state,
-                users: userList,
-            });
         }))
     }
 
-    @Action(DeleteUsers)
-    deleteDataFromState(ctx: StateContext<UserStateModel>, { id }: DeleteUsers) {
+    @Action(DeleteUser)
+    deleteDataFromState(ctx: StateContext<UserStateModel>, { id }: DeleteUser) {
         return this._us.deleteUser(id).pipe(tap((returnData:any) => {
-            const state=ctx.getState();
+            const state=ctx.getState();            
             const filteredArray=state.users.filter(contents=>contents.id!==id);
 
             ctx.setState({

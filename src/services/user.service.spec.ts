@@ -3,17 +3,8 @@ import {  HttpTestingController, provideHttpClientTesting } from '@angular/commo
 import { UserService } from './user.service';
 import { User } from '../types/user';
 import { provideHttpClient } from '@angular/common/http';
+import { createTestUser } from '../utils/create-test-user';
 
-function createTestUser(): User {
-  return {
-    id: 1,
-    name: 'Leanne Graham',
-    username: 'Bret',
-    email: 'Sincere@april.biz',   
-    phone: '1-770-736-8031 x56442',
-    website: 'hildegard.org',
-  };
-}
 
 describe('UserService', () => {
   let service: UserService;

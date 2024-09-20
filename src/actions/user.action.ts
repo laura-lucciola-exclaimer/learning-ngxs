@@ -8,19 +8,18 @@ export class GetUsers {
 }
 
 
-export class AddUsers {
+export class AddUser {
     static readonly type = `${ACTION_SCOPE} Add`;
     constructor(public payload: User) { }
 }
 
 
-export class UpdateUsers {
+export class UpdateUser {
     static readonly type = `${ACTION_SCOPE} Update`;
-    constructor(public payload: User, public id: number, public i:number) { }
+    constructor(public payload: User, public id: number) { }
 }
 
-
-export class DeleteUsers {
+export class DeleteUser {
     static readonly type = `${ACTION_SCOPE} Delete`;
     constructor(public id: number) { }
 }

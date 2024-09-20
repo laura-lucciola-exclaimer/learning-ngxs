@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { GetUsers, AddUsers, UpdateUsers, DeleteUsers } from '../../actions/user.action';
+import { GetUsers, AddUser, UpdateUser, DeleteUser } from '../../actions/user.action';
 import { UserState } from '../../states/user.state';
 import { CommonModule } from '@angular/common';
 import { UserStateModule } from '../../states/user.state.module';
@@ -34,11 +34,11 @@ export class UserComponent implements OnInit {
   }
 
   public addUser() {
-    this.store.dispatch(new AddUsers(this.userForm.value));
+    this.store.dispatch(new AddUser(this.userForm.value));
     this.userForm.reset();
   }
 
-  public updateUser(id: number, i: number) {
+  public updateUser(id: number) {
 
     const newData : User = {
       id: id,
@@ -49,11 +49,11 @@ export class UserComponent implements OnInit {
       website: 'helloWorld.com'
     }
 
-    this.store.dispatch(new UpdateUsers(newData, id, i));
+    this.store.dispatch(new UpdateUser(newData, id));
   }
 
   public deleteUser(i: number) {
-    this.store.dispatch(new DeleteUsers(i));
+    this.store.dispatch(new DeleteUser(i));
   }
 }
 

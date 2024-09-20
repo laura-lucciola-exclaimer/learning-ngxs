@@ -15,8 +15,8 @@ describe('UserComponent', () => {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        UserStateModule,
-        NgxsModule.forRoot([UserState])
+        NgxsModule.forRoot([UserState]),
+        UserStateModule
       ],
       providers: [provideHttpClient(), UserService]
     }).compileComponents();
