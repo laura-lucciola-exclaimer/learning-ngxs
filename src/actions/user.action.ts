@@ -1,3 +1,5 @@
+import { User } from "../types/user";
+
 const ACTION_SCOPE = '[Users]';
 
 
@@ -8,13 +10,13 @@ export class GetUsers {
 
 export class AddUsers {
     static readonly type = `${ACTION_SCOPE} Add`;
-    constructor(public payload: any) { }
+    constructor(public payload: User) { }
 }
 
 
 export class UpdateUsers {
     static readonly type = `${ACTION_SCOPE} Update`;
-    constructor(public payload: any, public id: number, public i:number) { }
+    constructor(public payload: User, public id: number, public i:number) { }
 }
 
 
