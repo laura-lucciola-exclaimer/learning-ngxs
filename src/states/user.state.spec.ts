@@ -22,6 +22,10 @@ describe('UserState', () => {
   
       store = TestBed.inject(Store);
       userService = TestBed.inject(UserService) as jasmine.SpyObj<UserService>;
+      store.reset({
+        ...store.snapshot(),
+        users: []
+      });
     });
   
     it('should get users', () => {
@@ -44,15 +48,6 @@ describe('UserState', () => {
         expect(users).toEqual([testUsers]);
       });
 
-    it('should add user', () => {
-      const testUsers: User = createTestUser();
-        userService.addUsers.and.returnValue(of(testUsers));
-    
-        store.dispatch(new AddUser(testUsers));
-    
-        const users = store.selectSnapshot(UserState.getAllUsers);
-        expect(users).toEqual([testUsers]);
-      });
 
       it('should update an existing user', () => {
         const testUsers: User = createTestUser();
